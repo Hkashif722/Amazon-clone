@@ -7,13 +7,20 @@ import {
   ShoppingCartIcon,
 } from "@heroicons/react/outline";
 
+import { signIn, signOut, useSession } from "next-auth/react";
+import { useRouter } from "next/router";
+
 function Header() {
+  const session = useSession();
+  const router = useRouter();
+
   return (
     <header>
       {/* top nav  */}
       <div className=" flex items-center bg-amazon_blue p-1 flex-grow py-2">
         <div className="mt-2 flex items-center flex-grow sm:flex-grow-0">
           <Image
+            onClick={() => router.push("/")}
             src="https://links.papareact.com/f90"
             width={150}
             height={40}
@@ -29,8 +36,19 @@ function Header() {
           <SearchIcon className="h-14 p-4" />
         </div>
         <div className="text-white flex ml-6 text-xs space-x-6 items-center whitespace-nowrap">
-          <div className=" link">
-            <p>Hello Kashif Hussain</p>
+          <div
+            onClick={session.status === "unauthenticated" ? signIn : signOut}
+            className=" cursor-pointer link"
+          >
+            <p>
+              {session.data !== null
+                ? `Hello, ${
+                    session.data?.user.name === undefined
+                      ? ""
+                      : session.data?.user.name
+                  }`
+                : "Sign In"}{" "}
+            </p>
             <p className=" font-extrabold  md:text-sm">Acconut & Lists</p>
           </div>
           <div className=" link">
