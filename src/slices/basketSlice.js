@@ -9,7 +9,20 @@ export const basketSlice = createSlice({
   initialState,
   reducers: {
     addToBasket: (state, action) => {
-      state.items = [...state.items, action.payload];
+      if (state.items.length > 0) {
+        state.items.forEach((item) => {
+          if (item.id === action.payload.id) {
+            item.itemCount++;
+            item.price += item.initialPrice;
+          } else if (
+            !state.items.find((item) => item.id === action.payload.id)
+          ) {
+            state.items = [...state.items, action.payload];
+          }
+        });
+      } else {
+        state.items = [...state.items, action.payload];
+      }
     },
     removeFromBasket: (state, action) => {
       state.items = state.items.filter((item) => item.id !== action.payload.id);
@@ -39,5 +52,7 @@ export const { addToBasket, removeFromBasket, itemCounter } =
 
 // Selectors - This is how we pull information from the Global store slice
 export const selectItems = (state) => state.basket.items;
+export const totalItemPrice = (state) =>
+  state.basket.items.reduce((total, item) => total + item.price, 0);
 
 export default basketSlice.reducer;
