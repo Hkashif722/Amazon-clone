@@ -40,7 +40,7 @@ function Header() {
         </div>
         <div className="text-white flex ml-6 text-xs space-x-6 items-center whitespace-nowrap">
           <div
-            onClick={session.status === "unauthenticated" ? signIn : signOut}
+            onClick={!session ? signIn : signOut}
             className=" cursor-pointer link"
           >
             <p>
