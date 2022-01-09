@@ -39,7 +39,10 @@ function Header() {
           <SearchIcon className="h-14 p-4" />
         </div>
         <div className="text-white flex ml-6 text-xs space-x-6 items-center whitespace-nowrap">
-          <div onClick={signIn} className=" cursor-pointer link">
+          <div
+            onClick={session.status === "unauthenticated" ? signIn : signOut}
+            className=" cursor-pointer link"
+          >
             <p>
               {session.data !== null
                 ? `Hello, ${
